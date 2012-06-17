@@ -212,19 +212,34 @@
 #define kAs0 1
 #define kA0  0
 
+/* pianoFreq is an 88-long array of floats
+ * it contains the frequencies of every note in order
+ * example usage:
+ *     float middleC = pianoFreq[kC4]; // C in 4th octave
+ *     // The float middleC now contains the float 261.626,
+ *     // the frequency in Hz of middle C on a piano
+ *     float fourFourty = pianoFreq[kA4]; // A440
+ *     float highC = pianoFreq[kC4 + 24]; // C two octaves above middle C
+ */
+
 const float pianoFreq[88] = {nA0, nAs0, nB0, nC1, nCs1, nD1, nDs1, nE1, nF1, nFs1, nG1, nGs1, nA1, nAs1, nB1, nC2, nCs2, nD2, nDs2, nE2, nF2, nFs2, nG2, nGs2, nA2, nAs2, nB2, nC3, nCs3, nD3, nDs3, nE3, nF3, nFs3, nG3, nGs3, nA3, nAs3, nB3, nC4, nCs4, nD4, nDs4, nE4, nF4, nFs4, nG4, nGs4, nA4, nAs4, nB4, nC5, nCs5, nD5, nDs5, nE5, nF5, nFs5, nG5, nGs5, nA5, nAs5, nB5, nC6, nCs6, nD6, nDs6, nE6, nF6, nFs6, nG6, nGs6, nA6, nAs6, nB6, nC7, nCs7, nD7, nDs7, nE7, nF7, nFs7, nG7, nGs7, nA7, nAs7, nB7, nC8};
 
-int i;
-extern float octave[8];
+/* note interval definitions
+ * example usage:
+ *     float middleC = pianoFreq[kC4];
+ *     float perfectFourth = pianoFreq[kC4 + per4];
+ *     float triTone = pianoFreq[kC4 + triT];
+ */
 
-float* majorOctave(int startKey) {
-	int currKey = startKey;
-	int majorScaleStruc[7] = {2, 2, 1, 2, 2, 2, 1};
-	for (i = 0; i < 9; i++) {
-		while (currKey <= 87) {
-			octave[i] = pianoFreq[currKey];
-			currKey += majorScaleStruc[i % 7];
-		}
-	}
-	return octave;
-}
+#define min2 1  // minor second
+#define maj2 2  // major second
+#define min3 3  // minor third
+#define maj3 4  // major third
+#define per4 5  // perfect fourth
+#define triT 6  // tritone
+#define per5 7  // perfect fifth
+#define min6 8  // minor sixth
+#define maj6 9  // major sixth
+#define min7 10 // minor seventh
+#define maj7 11 // major seventh
+#define per8 12 // perfect octave
