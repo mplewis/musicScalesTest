@@ -243,3 +243,30 @@ const float pianoFreq[88] = {nA0, nAs0, nB0, nC1, nCs1, nD1, nDs1, nE1, nF1, nFs
 #define min7 10 // minor seventh
 #define maj7 11 // major seventh
 #define per8 12 // perfect octave
+
+float freqScaleBlues(int keyStart, int numAbove) {
+	// index: 0,  1, 2,  3, 4, 5, 6
+	// intvl: 1, 3b, 4, 5b, 5, 7, 8
+	int scaleBluesIntervals[5] = {min3, per4, triT, per5, min7};
+
+	if (numAbove < 0) {							// if numAbove is negative, move the key down
+		while (numAbove <= 6) {					// bump an octave down every six blues notes
+			numAbove += 6;
+			keyStart -= per8;
+		}
+		return -1; 									// FIXME if numAbove is negative, it always returns the -1 error code
+
+	} else if (numAbove > 0) {					// if numAbove is positive, move the key up
+		while (numAbove >= 6) { 					// bump an octave up every six blues notes
+			numAbove -= 6;								// six keys in the blues scale
+			keyStart += per8;							// equals one octave in the chromatic scale
+		}
+		keyStart += scaleBluesIntervals[numAbove];
+	}
+
+	if (keyStart < 0 || keyStart > 87) {		// if the note reaches beyond the piano keys
+		return -1;									// return -1 error
+	} else { 									// otherwise
+		return pianoFreq[keyStart];					// return the freq requested
+	}
+}

@@ -12,6 +12,10 @@ void setup() {
 	float triTone = pianoFreq[kC4 + triT];
 	Serial.println(perfectFourth);
 	Serial.println(triTone);
+	Serial.println();
+	for (int i = 0; i <= 6; i++) {
+		Serial.println(freqScaleBlues(kAs2, i));
+	}
 }
 
 void loop() {}
