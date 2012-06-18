@@ -13,7 +13,20 @@ void setup() {
 	Serial.println(perfectFourth);
 	Serial.println(triTone);
 	Serial.println();
+
+	// this should print the freqs of a blues scale starting at Bb:
+	// Bb, D, Eb, E, F, Ab, Bb
 	for (int i = 0; i <= 6; i++) {
+		Serial.print("Note ");
+		Serial.print(i);
+		Serial.print(": ");
+		Serial.println(freqScaleBlues(kAs2, i));
+	}
+	Serial.println();
+	for (int i = 0; i >= -6; i--) {
+		Serial.print("Note ");
+		Serial.print(i);
+		Serial.print(": ");
 		Serial.println(freqScaleBlues(kAs2, i));
 	}
 }

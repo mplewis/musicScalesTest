@@ -247,21 +247,29 @@ const float pianoFreq[88] = {nA0, nAs0, nB0, nC1, nCs1, nD1, nDs1, nE1, nF1, nFs
 float freqScaleBlues(int keyStart, int numAbove) {
 	// index: 0,  1, 2,  3, 4, 5, 6
 	// intvl: 1, 3b, 4, 5b, 5, 7, 8
-	int scaleBluesIntervals[5] = {min3, per4, triT, per5, min7};
+	// int scaleBluesIntervals[5] = {min3, per4, triT, per5, min7};
+	int scaleBluesIntervals[5] = {3, 5, 6, 7, 10};
+	// 12 - sBI[5] reversed = 2, 5, 6, 7, 9
 
 	if (numAbove < 0) {							// if numAbove is negative, move the key down
-		while (numAbove <= 6) {					// bump an octave down every six blues notes
+		while (numAbove <= -6) {					// bump an octave down every six blues notes
 			numAbove += 6;
 			keyStart -= per8;
 		}
-		return -1; 									// FIXME if numAbove is negative, it always returns the -1 error code
+		// numAbove = -2
+		if (numAbove < 0) {
+			numAbove = 5 + numAbove; // numAbove = 3
+			keyStart -= (12 - scaleBluesIntervals[numAbove]); // keyStart -= (12 - sBI[3]); [12 - 7 = 5]
+		}
 
 	} else if (numAbove > 0) {					// if numAbove is positive, move the key up
 		while (numAbove >= 6) { 					// bump an octave up every six blues notes
 			numAbove -= 6;								// six keys in the blues scale
 			keyStart += per8;							// equals one octave in the chromatic scale
 		}
-		keyStart += scaleBluesIntervals[numAbove];
+		if (numAbove > 0) {							// if numAbove is > 0, indicating there are non-octaves to take care of,
+			keyStart += scaleBluesIntervals[numAbove - 1]; // bump the key in the blues interval specified
+		}
 	}
 
 	if (keyStart < 0 || keyStart > 87) {		// if the note reaches beyond the piano keys
