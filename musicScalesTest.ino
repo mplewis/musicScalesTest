@@ -29,6 +29,10 @@ void setup() {
 		Serial.print(": ");
 		Serial.println(freqScaleBlues(kAs2, i));
 	}
+
+	Serial.println();
+
+	Serial.println(freqScaleBlues(kAs2, 3));
 }
 
 void loop() {}

@@ -244,6 +244,17 @@ const float pianoFreq[88] = {nA0, nAs0, nB0, nC1, nCs1, nD1, nDs1, nE1, nF1, nFs
 #define maj7 11 // major seventh
 #define per8 12 // perfect octave
 
+/* freqScaleBlues
+ * Takes in a starting keynum and a number of blues scale steps to move up/down (+/-)
+ * Returns the freq value of that note as a float
+ * The blues scale in Bb is as follows:
+ *     Bb      Db      Eb      E      F      Ab      Bb        notes
+ *      | min3  | maj2  | min2 | min2 | min3  | min2 |         interior intervals
+ *      | min3  | per4  | triT | per5 | min7  | per8 |         Bb ... note intervals
+ * Example usage:
+ *     float bFlatBluesNoteFour = freqScaleBlues(kAs2, 3); // returns E3, 164.814 Hz
+ */
+
 float freqScaleBlues(int keyStart, int numAbove) {
 	// index: 0,  1, 2,  3, 4, 5, 6
 	// intvl: 1, 3b, 4, 5b, 5, 7, 8
@@ -253,13 +264,12 @@ float freqScaleBlues(int keyStart, int numAbove) {
 
 	if (numAbove < 0) {							// if numAbove is negative, move the key down
 		while (numAbove <= -6) {					// bump an octave down every six blues notes
-			numAbove += 6;
-			keyStart -= per8;
+			numAbove += 6;								// six keys in the blues scale
+			keyStart -= per8;							// equals one octave in the chromatic scale
 		}
-		// numAbove = -2
-		if (numAbove < 0) {
-			numAbove = 5 + numAbove; // numAbove = 3
-			keyStart -= (12 - scaleBluesIntervals[numAbove]); // keyStart -= (12 - sBI[3]); [12 - 7 = 5]
+		if (numAbove < 0) {							// if numAbove is < 0, indicating there are non-octaves to take care of,
+			numAbove = 5 + numAbove;					// fix numAbove to refer to the proper interval index value
+			keyStart -= (12 - scaleBluesIntervals[numAbove]); // bump the key in the blues interval specified
 		}
 
 	} else if (numAbove > 0) {					// if numAbove is positive, move the key up
