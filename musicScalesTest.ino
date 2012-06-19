@@ -1,4 +1,4 @@
-#include "musicScales.c"
+#include "musicScales.h"
 
 void setup() {
 
